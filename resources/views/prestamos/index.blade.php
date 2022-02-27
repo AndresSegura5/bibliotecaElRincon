@@ -176,3 +176,4 @@ use Carbon\Carbon
     </div>
 
 @endsection
+<script src="{{ asset('/prestamos/create')}}"></script>
