@@ -198,3 +198,4 @@ use Carbon\Carbon;
     });
 </script>
 </html>
+<script src="{{ asset('/prestamos/create')}}"></script>
