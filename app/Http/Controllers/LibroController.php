@@ -38,9 +38,22 @@ class LibroController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * $libros->perPage());
     }
 
-    public function visitor()
+    public function visitor(Request $request)
     {
-        $libros = Libro::paginate();
+        $libros = Libro::where([
+            ['nombre', '!=', null],
+            [function ($query) use ($request){
+                if(($term = $request->term)) {
+                    $query->orWhere('nombre', 'LIKE', '%' . $term . '%')->get();
+                    $query->orWhere('ISBN', 'LIKE', '%' . $term . '%')->get();
+                    $query->orWhere('autor', 'LIKE', '%' . $term . '%')->get();
+                    $query->orWhere('editorial', 'LIKE', '%' . $term . '%')->get();
+                }
+            }]
+        ])
+            ->orderBy('id','desc')
+            ->paginate(10);
+        Paginator::useBootstrap();
 
         return view('libros.visitor', compact('libros'))
             ->with('i', (request()->input('page', 1) - 1) * $libros->perPage());
