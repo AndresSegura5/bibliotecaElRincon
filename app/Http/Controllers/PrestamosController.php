@@ -104,7 +104,7 @@ class PrestamosController extends Controller{
                         Prestamo::where('id_usuario', $usrx->id_usuario)->update(array('fechaLibre' => $fechaDev2aFecha->addDays($fechaDev2aFecha->diffInDays($usrx->fecha_devolucion_1))));
                     }
 
-                    if($usrx->estado == "atrasado" && ($mytime->gt($fechaDev2aFecha->addDays($usrx->diasDeRetraso)))){
+                    if($usrx->estado == "atrasado" && ($mytime->gte($fechaDev2aFecha->addDays($usrx->diasDeRetraso)))){
                         Prestamo::where('id_usuario', $usr->id_usuario)->update(array('estaLibre' => 1));
                         $lista_usuarios[] = $usrx->id_usuario;
                     }
@@ -117,9 +117,6 @@ class PrestamosController extends Controller{
                     $lista_usuarios[] = $usr->id_usuario;
                 }
 
-                if($usrx->fechaLibre == $mytime || $usrx->fechaLibre > $mytime){
-                    Prestamo::where('id_usuario', $usr->id_usuario)->update(array('estaLibre' => 1));
-                }
             }
 
             if($lista_usuarios==null){
